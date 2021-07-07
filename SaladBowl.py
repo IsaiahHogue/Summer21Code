@@ -14,6 +14,15 @@ def get_texts():
         file_texts.append(file_text)
     return file_texts
 
+# Gets files from String input for easier intrigration with outside scripts
+def get_texts_s(file_1, file_2):
+    files = [file_1, file_2]
+    file_texts = []
+    for file in files:
+        file_text = process_file(file)
+        file_texts.append(file_text)
+    return file_texts
+
 # Reads String file which represnts user input
 # Handles either raw text input or file name input
 def process_file(file):
