@@ -1,14 +1,16 @@
-import nltk
-import random
-import sys
+from nltk import sent_tokenize
+from random import random
+# import random
+# import sys
 
 # Gets user input and returns a list of two texts
 def get_texts():
     files = ["File 1:", "File 2:"]
     file_texts = []
     for file in files:
-        print("Enter file name or raw text for", file)
-        file_text = process_file(sys.stdin.readline())
+        # print("Enter file name or raw text for", file)
+        # file_text = process_file(sys.stdin.readline())
+        file_text = process_file(input("Enter file name or raw text for " + file + "\n"))
         file_texts.append(file_text)
     return file_texts
 
@@ -16,15 +18,17 @@ def get_texts():
 # Handles either raw text input or file name input
 def process_file(file):
     try:
-        f = open(file.strip())
+        f = open(file.strip(), mode="r")
         text = ""
         for line in f.readlines():
             text += line
-        return_info = nltk.sent_tokenize(text)
+        # return_info = nltk.sent_tokenize(text)
+        return_info = sent_tokenize(text)
         f.close()
         return return_info
     except:
-        return nltk.sent_tokenize(file)
+        # return nltk.sent_tokenize(file)
+        return sent_tokenize(file)
 
 # Returns list input sents with tag insirted alonside each element in a tupple
 def tag_sents(sents, tag):
@@ -35,7 +39,8 @@ def tag_sents(sents, tag):
 def merge(text1, text2):
     salad = []
     while(text1 != [] and text2 !=  []):
-        if(random.random() > .5):
+        # if(random.random() > .5):
+        if(random() > .5):
             salad.append(text1.pop(0))
         else:
             salad.append(text2.pop(0))
@@ -45,22 +50,30 @@ def merge(text1, text2):
 
 # Prints salad to String destination with sent tags
 def do_output(salad, destintion=""):
-    if(destintion == ""):
-        print("Enter output destination:")
-        destintion = sys.stdin.readline().strip()
+    # if(destintion == ""):
+        # destintion = input("Enter output destination:")
+    destintion = input("Enter output destination:")
+        # print("Enter output destination:")
+        # destintion = sys.stdin.readline().strip()
     try:
-        f = open(destintion)
+        f = open(destintion, mode="w")
+        # f = open(destintion)
+        print(destintion)
         for sent in salad:
-            print(sent, f)
+            f.writelines(sent)
+            # print(sent, f)
     except:
-        for sent in salad:
-            print(sent)           
+        print("poo poo")
+        # for sent in salad:
+        #     print(sent)           
 
 # Prints salad to String destination without sent tags
 def do_output_hidden(salad, destintion=""):
     if(destintion == ""):
         print("Enter output destination:")
-        destintion = sys.stdin.readline().strip()
+        # destintion = sys.stdin.readline().strip()
+        destination = input("Enter output destination:\n")
+        # destintion = sys.stdin.readline().strip()
     try:
         f = open(destintion)
         for sent in salad:
@@ -71,8 +84,10 @@ def do_output_hidden(salad, destintion=""):
 
 def main():
     texts = get_texts()
-    tag_sents(texts[0], "One")
-    tag_sents(texts[1], "Two")
+    tag_sents(texts[0], "(1)\n")
+    # tag_sents(texts[1], "One")
+    tag_sents(texts[1], "(2)\n")
+    # tag_sents(texts[1], "Two")
     salad = merge(texts[0], texts[1])
     do_output(salad)
 
